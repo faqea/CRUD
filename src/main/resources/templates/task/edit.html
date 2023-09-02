@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Task Edit</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<!-- Подключение скриптов Bootstrap -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+	<!-- Форма для редактирования task'а (если у роли есть возможность редактировать task) -->
+	<!-- Form for editing a task (if the role has the ability to edit the task) -->
+	<div class="container-fluid">
+		<div class="row">
+
+			<div th:if="${taskEdit}">
+				<form th:object="${editTask}" th:action="@{/task/{id}(id=${editTask.getId()})}" method="post"
+					class="my-form">
+
+					<div class="container-fluid">
+						<div class="row g-3 align-items-center">
+
+							<input name="buyerId" type="hidden" th:value="${buyerId}">
+
+							<input name="robotId" type="hidden" th:value="${robotId}">
+
+							<div class="col-2">
+								<label for="task_type" class="visually-hidden">Opgave type</label>
+								<input list="typeList" type="text" th:field="*{taskType}" class="form-control"
+									id="task_type" placeholder="">
+
+								<datalist id="typeList">
+									<option value="Installation">Installation</option>
+									<option value="Servicebesøg">Servicebesøg</option>
+									<option value="Reklamation">Reklamation</option>
+									<option value="Hundehegn">Hundehegn</option>
+									<option value="Garantisag">Garantisag</option>
+								</datalist>
+
+							</div>
+
+							<div class="col-2">
+								<label for="original_date" class="visually-hidden">Opr. dato</label>
+								<input type="datetime-local" th:field="*{originalDate}" class="form-control"
+									id="original_date" placeholder="">
+							</div>
+
+							<div class="col-2">
+								<label for="specify_date" class="visually-hidden">Opg. dato</label>
+								<input type="date" th:field="*{specifyDate}" class="form-control" id="specify_date"
+									placeholder="">
+							</div>
+
+							<div class="col-2">
+								<label for="time" class="visually-hidden">Tid</label>
+								<input type="text" th:field="*{time}" class="form-control" id="time" placeholder="">
+							</div>
+
+							<div class="col-2">
+								<label for="row_fold" class="visually-hidden">Rækkefoldge</label>
+								<input type="text" th:field="*{rowFold}" class="form-control" id="row_fold"
+									placeholder="">
+							</div>
+
+							<div class="col-2">
+								<label for="installer" class="visually-hidden">Installator</label>
+								<input list="installatorsList" type="text" th:field="*{installer}" class="form-control"
+									id="installer" placeholder="">
+
+								<datalist id="installatorsList">
+									<option th:each="installator : ${installatorsList}"
+										th:value="${installator.getName()}"
+										th:text="${installator.getInitials()} + ' ' + ${installator.getName()}">
+									</option>
+								</datalist>
+							</div>
+
+							<div class="col-2">
+								<label for="construction_market" class="visually-hidden">Byggemarked</label>
+								<input list="buildMarketsList" type="text" th:field="*{constructionMarket}"
+									class="form-control" id="construction_market" placeholder="">
+
+								<datalist id="buildMarketsList">
+									<option th:each="market : ${buildMarketsList}" th:value="${market.getName()}"
+										th:text="${market.getName()}"></option>
+								</datalist>
+							</div>
+
+							<div class="col-2">
+								<label for="store_number" class="visually-hidden">Butiks nr.</label>
+								<input type="text" th:field="*{storeNumber}" class="form-control" id="store_number"
+									placeholder="">
+							</div>
+
+
+							<div class="col-2">
+								<label for="requisition_number" class="visually-hidden">Rekvisitions nr.</label>
+								<input type="text" th:field="*{requisitionNumber}" class="form-control"
+									id="requisition_number" placeholder="">
+							</div>
+
+							<div class="col-2">
+								<label for="seller" class="visually-hidden">Sælger</label>
+								<input list="sellerList" type="text" th:field="*{seller}" class="form-control"
+									id="seller" placeholder="">
+
+								<datalist id="sellerList">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+								</datalist>
+							</div>
+							
+							
+							
+							<div class="col-2">
+								<label for="client" class="visually-hidden">Kunde</label>
+								<input list="buyerList" type="text" th:field="*{client}" class="form-control"
+									id="client" placeholder="">
+
+								<datalist id="buyerList">
+									<option  th:each="client : ${buyerList}" th:if="${client.getTask == null}" th:value="${client.getId()}"
+										th:text="${client.getName()}"></option>
+								</datalist>
+							</div>
+							
+
+
+							<div class="col-2">
+								<label for="serial_number" class="visually-hidden">Serie-nummer</label>
+								<input type="text" th:field="*{serialNumber}" class="form-control" id="serial_number"
+									placeholder="">
+							</div>
+
+							<div class="col-2">
+								<label for="campaign1" class="visually-hidden">Kampagne1</label>
+								<input type="text" th:field="*{campaign1}" class="form-control" id="campaign1"
+									placeholder="">
+							</div>
+
+							<div class="col-2">
+								<label for="campaign2" class="visually-hidden">Kampagne2</label>
+								<input type="text" th:field="*{campaign2}" class="form-control" id="campaign2"
+									placeholder="">
+							</div>
+
+							<div class="col-2">
+								<label for="producer" class="visually-hidden">Producent</label>
+								<input list="producersList" type="text" th:field="*{producer}" class="form-control"
+									id="producer" placeholder="">
+
+								<datalist id="producersList">
+									<option th:each="producer : ${producersList}" th:value="${producer.getName()}"
+										th:text="${producer.getName()}"></option>
+								</datalist>
+							</div>
+
+							<div class="col-2">
+								<label for="task_status" class="visually-hidden">OpgaveStatus</label>
+								<input list="statusesList" type="text" th:field="*{task_status}" class="form-control"
+									id="task_status" placeholder="">
+
+								<datalist id="statusesList">
+									<option value="Kladde">Kladde</option>
+									<option value="Ny">Ny</option>
+									<option value="Igang">Igang</option>
+									<option value="Afventer kunde">Afventer kunde</option>
+									<option value="Færdig">Færdig</option>
+									<option value="Afbestilt">Afbestilt</option>
+									<option value="Afvist">Afvist</option>
+								</datalist>
+							</div>
+
+							<div class="col-2">
+								<label for="robot" class="visually-hidden">Robot</label>
+								<input list="robotList" type="text" th:field="*{robot}" class="form-control" id="robot"
+									placeholder="">
+
+								<datalist id="robotList">
+									<option th:each="robot : ${robotList}" th:if="${robot.getTask == null}" th:value="${robot.getId()}"
+										th:text="${robot.getRobotName()}"></option>
+								</datalist>
+								
+							</div>
+
+							<div class="col-2">
+								<label for="pin_code" class="visually-hidden">PINCode</label>
+								<input type="text" th:field="*{pinCode}" class="form-control" id="pin_code"
+									placeholder="">
+							</div>
+
+
+
+							<div class="col-2 form-check">
+								<input class="form-check-input" type="checkbox" th:field="*{invoicedManufacturer}"
+									id="flexCheckDefault">
+								<label class="form-check-label" for="flexCheckDefault">
+									FakturretProducent
+								</label>
+							</div>
+
+
+
+							<div class="col-2 form-check">
+								<input class="form-check-input" type="checkbox" th:field="*{invoicedClient}"
+									id="flexCheckDefault">
+								<label class="form-check-label" for="flexCheckDefault">
+									FakturretKunde
+								</label>
+							</div>
+
+
+
+							<div class="col-2 form-check">
+								<input class="form-check-input" type="checkbox" th:field="*{invoicedConstructionMarket}"
+									id="flexCheckDefault">
+								<label class="form-check-label" for="flexCheckDefault">
+									FakturretByggemarked
+								</label>
+							</div>
+
+
+							<div class="col-2">
+								<button type="submit" class="btn btn-success mt-4" id="save-button">Save</button>
+							</div>
+
+						</div>
+					</div>
+
+				</form>
+
+			</div>
+
+		</div>
+	</div>
+
+	<!-- Форма для редактирования task'а (если у роли нет возможности редактировать task) -->
+	<!-- Form for editing a task (if the role hasn't the ability to edit the task) -->
+	<div class="container-fluid">
+		<div class="row">
+
+			<div th:if="${!taskEdit}">
+				<form th:object="${editTask}" th:action="@{/task/{id}(id=${editTask.getId()})}" method="post"
+					class="my-form">
+
+					<div class="container-fluid">
+						<div class="row g-3 align-items-center">
+
+							<input name="buyerId" type="hidden" th:value="${buyerId}">
+
+							<input name="robotId" type="hidden" th:value="${robotId}">
+
+							<div class="col-2">
+								<label for="task_type" class="visually-hidden">Opgave type</label>
+								<input list="typeList" type="text" th:field="*{taskType}" class="form-control"
+									id="task_type" placeholder="" readonly>
+
+								<datalist id="typeList">
+									<option value="Installation">Installation</option>
+									<option value="Servicebesøg">Servicebesøg</option>
+									<option value="Reklamation">Reklamation</option>
+									<option value="Hundehegn">Hundehegn</option>
+									<option value="Garantisag">Garantisag</option>
+								</datalist>
+
+							</div>
+
+							<div class="col-2">
+								<label for="original_date" class="visually-hidden">Opr. dato</label>
+								<input type="datetime-local" th:field="*{originalDate}" class="form-control"
+									id="original_date" placeholder="" readonly>
+							</div>
+
+							<div class="col-2">
+								<label for="specify_date" class="visually-hidden">Opg. dato</label>
+								<input type="date" th:field="*{specifyDate}" class="form-control" id="specify_date"
+									placeholder="" readonly>
+							</div>
+
+							<div class="col-2">
+								<label for="time" class="visually-hidden">Tid</label>
+								<input type="text" th:field="*{time}" class="form-control" id="time" placeholder=""
+									readonly>
+							</div>
+
+							<div class="col-2">
+								<label for="row_fold" class="visually-hidden">Rækkefoldge</label>
+								<input type="text" th:field="*{rowFold}" class="form-control" id="row_fold"
+									placeholder="" readonly>
+							</div>
+
+							<div class="col-2">
+								<label for="installer" class="visually-hidden">Installator</label>
+								<input list="installatorsList" type="text" th:field="*{installer}" class="form-control"
+									id="installer" placeholder="" readonly>
+
+								<datalist id="installatorsList">
+									<option th:each="installator : ${installatorsList}"
+										th:value="${installator.getName()}"
+										th:text="${installator.getInitials()} + ' ' + ${installator.getName()}">
+									</option>
+								</datalist>
+							</div>
+
+							<div class="col-2">
+								<label for="construction_market" class="visually-hidden">Byggemarked</label>
+								<input list="buildMarketsList" type="text" th:field="*{constructionMarket}"
+									class="form-control" id="construction_market" placeholder="" readonly>
+
+								<datalist id="buildMarketsList">
+									<option th:each="market : ${buildMarketsList}" th:value="${market.getName()}"
+										th:text="${market.getName()}"></option>
+								</datalist>
+							</div>
+
+							<div class="col-2">
+								<label for="store_number" class="visually-hidden">Butiks nr.</label>
+								<input type="text" th:field="*{storeNumber}" class="form-control" id="store_number"
+									placeholder="" readonly>
+							</div>
+
+
+							<div class="col-2">
+								<label for="requisition_number" class="visually-hidden">Rekvisitions nr.</label>
+								<input type="text" th:field="*{requisitionNumber}" class="form-control"
+									id="requisition_number" placeholder="" readonly>
+							</div>
+
+							<div class="col-2">
+								<label for="seller" class="visually-hidden">Sælger</label>
+								<input list="sellerList" type="text" th:field="*{seller}" class="form-control"
+									id="seller" placeholder="" readonly>
+
+								<datalist id="sellerList">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+								</datalist>
+							</div>
+
+
+							<div class="col-2">
+								<label for="client" class="visually-hidden">Kunde</label>
+								<input list="buyersList" type="text" th:field="*{client}" class="form-control"
+									id="client" placeholder="" readonly>
+
+								<datalist id="buyersList">
+									<option th:each="client : ${buyersList}" th:value="${client.getId()}"
+										th:text="${client.getId()} +  ' ' + ${client.getName()}"></option>
+								</datalist>
+							</div>
+
+							<div class="col-2">
+								<label for="serial_number" class="visually-hidden">Serie-nummer</label>
+								<input type="text" th:field="*{serialNumber}" class="form-control" id="serial_number"
+									placeholder="" readonly>
+							</div>
+
+							<div class="col-2">
+								<label for="campaign1" class="visually-hidden">Kampagne1</label>
+								<input type="text" th:field="*{campaign1}" class="form-control" id="campaign1"
+									placeholder="" readonly>
+							</div>
+
+							<div class="col-2">
+								<label for="campaign2" class="visually-hidden">Kampagne2</label>
+								<input type="text" th:field="*{campaign2}" class="form-control" id="campaign2"
+									placeholder="" readonly>
+							</div>
+
+							<div class="col-2">
+								<label for="producer" class="visually-hidden">Producent</label>
+								<input list="producersList" type="text" th:field="*{producer}" class="form-control"
+									id="producer" placeholder="" readonly>
+
+								<datalist id="producersList">
+									<option th:each="producer : ${producersList}" th:value="${producer.getName()}"
+										th:text="${producer.getName()}"></option>
+								</datalist>
+							</div>
+
+							<div class="col-2">
+								<label for="task_status" class="visually-hidden">OpgaveStatus</label>
+								<input list="statusesList" type="text" th:field="*{task_status}" class="form-control"
+									id="task_status" placeholder="" readonly>
+
+								<datalist id="statusesList">
+									<option value="Kladde">Kladde</option>
+									<option value="Ny">Ny</option>
+									<option value="Igang">Igang</option>
+									<option value="Afventer kunde">Afventer kunde</option>
+									<option value="Færdig">Færdig</option>
+									<option value="Afbestilt">Afbestilt</option>
+									<option value="Afvist">Afvist</option>
+								</datalist>
+							</div>
+
+							<div class="col-2">
+								<label for="robot" class="visually-hidden">Robot</label>
+								<input list="robotList" type="text" th:field="*{robot}" class="form-control" id="robot"
+									placeholder="" readonly>
+
+								<datalist id="robotList">
+									<option th:each="robot : ${robotList}" th:value="${robot.getId()}"
+										th:text="${robot.getRobotName()}"></option>
+								</datalist>
+							</div>
+
+							<div class="col-2">
+								<label for="pin_code" class="visually-hidden">PINCode</label>
+								<input type="text" th:field="*{pinCode}" class="form-control" id="pin_code"
+									placeholder="" readonly>
+							</div>
+
+							<div class="col-2">
+								<label for="invoiced_manufacturer" class="visually-hidden">FakturretProducent</label>
+								<input type="text" th:field="*{invoicedManufacturer}" class="form-control"
+									id="invoiced_manufacturer" placeholder="" readonly>
+							</div>
+
+							<div class="col-2">
+								<label for="invoiced_client" class="visually-hidden">FakturretKunde</label>
+								<input type="text" th:field="*{invoicedClient}" class="form-control"
+									id="invoiced_client" placeholder="" readonly>
+							</div>
+
+							<div class="col-2">
+								<label for="invoiced_construction_market" class="visually-hidden">FakturretByggemarked</label>
+								<input type="text" th:field="*{invoicedConstructionMarket}" class="form-control"
+									id="invoiced_construction_market" placeholder="" readonly>
+							</div>
+
+							<div class="col-2">
+								<button type="submit" class="btn btn-success mt-4" id="save-button">Save</button>
+							</div>
+
+						</div>
+					</div>
+
+				</form>
+
+			</div>
+
+		</div>
+	</div>
+
+
+	<!-- Просмотр робота и клиента -->
+	<!-- Viewing the robot and the client -->
+	<div th:if="${viewAll}">
+
+		<div class="container-fluid mt-3 ml-3">
+			<div class="row">
+
+				<!-- Кнопка для редактирования робота -->
+				<!-- Button to edit the robot -->
+				<button th:data-id="${robot.getId()}" class="btn btn-outline-dark mr-1" id="openLinkButton"
+					type="button">
+					Edit
+					robot
+				</button>
+
+				<!-- Кнопка для редактирования клиента -->
+				<!-- Button for editing the client -->
+				<button type="button" id="openLinkButton2" class="btn btn-outline-dark mr-1"
+					th:data-id="${buyer.getId()}">
+					Edit
+					buyer
+				</button>
+
+			</div>
+		</div>
+
+		<!-- Скрипт для редактирования робота -->
+		<!-- Script for editing a robot -->
+		<script src="/js/task/editRobot.js"></script>
+
+
+		<!-- Cкрипт для редактирования клиента -->
+		<!-- Script for client editing -->
+		<script src="/js/task/editBuyer.js"></script>
+
+	</div>
+
+	<!-- Добавление робота и просмотр покупателя -->
+	<!-- Adding a robot and viewing a customer -->
+	<div th:if="${addRobot}">
+
+		<div class="container-fluid mt-3 ml-3">
+			<div class="row">
+
+				<!-- Кнопка для добавления робота -->
+				<!-- Button to add a robot -->
+				<button class="btn btn-outline-dark mr-1" onclick="sendAndOpenEditForm4()">Add robot</button>
+
+				<!-- Кнопка для редактирования клиента -->
+				<!-- Button for editing the client -->
+				<button type="button" id="openLinkButton2" class="btn btn-outline-dark mr-1"
+					th:data-id="${buyer.getId()}">
+					Edit
+					buyer
+				</button>
+
+			</div>
+		</div>
+
+		<!-- ID task'а -->
+		<!-- Task ID -->
+		<input id="value" type="hidden" th:value="${editTask.getId()}">
+
+
+		<!-- Скрипт для создания нового робота -->
+		<!-- Script for creating a new robot-->
+		<script src="/js/task/addRobot.js"></script>
+
+		<!-- Cкрипт для редактирования клиента -->
+		<!-- Script for client editing -->
+		<script src="/js/task/editBuyer.js"></script>
+
+	</div>
+
+	<!-- Добавление покупателя и просмотр робота -->
+	<!-- Adding a customer and viewing a robot -->
+	<div th:if="${viewRobot}">
+
+		<div class="container-fluid mt-3 ml-3">
+			<div class="row">
+
+				<!-- Кнопка для создания покупателя -->
+				<!-- Button to create a customer -->
+				<button class="btn btn-outline-dark mr-1" onclick="sendAndOpenEditForm3()">Add buyer</button>
+
+				<!-- Кнопка для редактирования робота -->
+				<!-- Button to edit the robot -->
+				<button th:data-id="${robot.getId()}" id="openLinkButton" type="button"
+					class="btn btn-outline-dark mr-1">
+					Edit robot
+				</button>
+
+			</div>
+		</div>
+		<!-- ID task'а -->
+		<!-- Task ID -->
+		<input id="value" type="hidden" th:value="${editTask.getId()}">
+
+		<!-- Скрипт для создания нового buyer'а -->
+		<!-- Script for creating a new buyer -->
+		<script src="/js/task/addBuyer.js"></script>
+
+		<!-- Скрипт для редактирования робота -->
+		<!-- Script for editing a robot -->
+		<script src="/js/task/editRobot.js"></script>
+
+	</div>
+
+	<!-- Добавление робота и покупателя -->
+	<!-- Adding a robot and a buyer -->
+	<div th:if="${addAll}">
+
+		<div class="container-fluid mt-3 ml-3">
+			<div class="row">
+
+				<!-- Кнопка для добавления робота -->
+				<!-- Button to add a robot -->
+				<button class="btn btn-outline-dark mr-1" onclick="sendAndOpenEditForm4()">Add robot</button>
+
+				<!-- Кнопка для создания покупателя -->
+				<!-- Button to create a customer -->
+				<button class="btn btn-outline-dark mr-1" onclick="sendAndOpenEditForm3()">Add buyer</button>
+
+			</div>
+		</div>
+
+		<!-- Скрипт для создания нового робота -->
+		<!-- Script for creating a new robot-->
+		<script src="/js/task/addRobot.js"></script>
+
+		<!-- ID task'а -->
+		<!-- Task ID -->
+		<input id="value" type="hidden" th:value="${editTask.getId()}">
+
+		<!-- Скрипт для создания нового buyer'а -->
+		<!-- Script for creating a new buyer -->
+		<script src="/js/task/addBuyer.js"></script>
+
+	</div>
+
+	<!-- Информация о клиенте -->
+	<!-- Customer information -->
+
+	<div class="container-fluid mt-4">
+
+		<div class="row">
+
+			<div class="col">
+
+				<p>Kunde info</p>
+				<hr />
+
+				<!-- Информация о клиенте -->
+				<!-- Customer information -->
+				<div th:if="${clientInfoY}">
+					<form th:object="${buyer}">
+
+						<div class="container-fluid">
+							<div class="row g-3 align-items-center">
+
+								<div class="col-2">
+									<label for="id" class="visually-hidden">Client number</label>
+									<input type="text" th:field="*{id}" class="form-control" id="id"
+										placeholder="" readonly>
+								</div>
+
+								<div class="col-2">
+									<label for="name" class="visually-hidden">Name</label>
+									<input type="text" th:field="*{name}" class="form-control" id="name"
+										placeholder="" readonly>
+								</div>
+
+								<div class="col-2">
+									<label for="way" class="visually-hidden">Way</label>
+									<input type="text" th:field="*{way}" class="form-control" id="way" placeholder=""
+										readonly>
+								</div>
+
+								<div class="col-2">
+									<label for="way2" class="visually-hidden">Way 2</label>
+									<input type="text" th:field="*{way2}" class="form-control" id="way2"
+										placeholder="" readonly>
+								</div>
+
+								<div class="col-2">
+									<label for="email" class="visually-hidden">Email</label>
+									<input type="text" th:field="*{email}" class="form-control" id="email"
+										placeholder="" readonly>
+								</div>
+
+								<div class="col-2">
+									<label for="phone_number1" class="visually-hidden">Phone number</label>
+									<input type="text" th:field="*{phone_number}" class="form-control"
+										id="phone_number1" placeholder="" readonly>
+								</div>
+
+
+								<div class="col-2">
+									<label for="phone_number2" class="visually-hidden">Phone number 2</label>
+									<input type="text" th:field="*{phone_number2}" class="form-control"
+										id="phone_number2" placeholder="" readonly>
+								</div>
+
+								<div class="col-2">
+									<label for="phone_number3" class="visually-hidden">Phone number 3</label>
+									<input type="text" th:field="*{phone_number3}" class="form-control"
+										id="phone_number3" placeholder="" readonly>
+								</div>
+
+							</div>
+						</div>
+
+					</form>
+				</div>
+			</div>
+
+
+		</div>
+
+
+	</div>
+
+
+	<!-- Проверка на отсутствие клиента -->
+	<!-- Checking for customer unavailability -->
+	<div th:if="${clientInfoN}"></div>
+
+
+	<!-- Комментарии к task'у -->
+	<!-- Comments on the task -->
+	<div class="container-fluid mt-auto">
+
+		<div class="row align-items-end">
+			<div class="col-6"
+				style="position: relative; background-color: #e6e8e9; height: 300px; max-height: 300px; overflow: scroll; overflow-x: hidden">
+
+				<div th:each="comment : ${comments}">
+
+					<div th:text="${person_username} + ' ' + ${comment.getCreateDate().format(formattedDate)}"></div>
+
+					<div style="display: flex; align-items: center; margin-bottom: 10px;">
+
+						<div style="max-width: 90%; width: 80%; word-break: break-word;"
+							th:text="${comment.getComment()}"></div>
+
+
+						<input style="margin-left: 20%" class="comment-checkbox"
+							th:if="${commentCheck || comment.isChecked()}" type="checkbox"
+							th:data-id="${comment.getId()}" th:checked="${comment.isChecked()}" />
+
+						<span class="delete-comment-button" th:data-client-id="${id}" th:data-id="${comment.getId()}"
+							style="cursor: pointer; color: #ff0000; font-weight: bold; position: center;">&times;</span>
+
+
+					</div>
+
+
+				</div>
+			</div>
+
+		</div>
+
+
+		<div class="row align-items-end">
+			<div class="col-11">
+
+				<form th:action="@{/comment/task}" method="post">
+
+					<div class="container-fluid">
+						<div class="row g-3 align-items-center">
+
+							<input type="hidden" name="id" th:value="*{id}">
+
+							<div class="col-2">
+								<label for="comment" class="visually-hidden">Comment</label>
+								<input name="comment" type="text" class="form-control" id="comment"
+									placeholder="">
+							</div>
+
+							<div class="col-2">
+								<button class="btn btn-outline-dark mt-4" type="submit">Save</button>
+							</div>
+
+						</div>
+					</div>
+
+				</form>
+
+			</div>
+
+			<div class="col">
+				<div class="d-flex justify-content-end">
+					<button id="redirectButton" type="button" class="btn btn-outline-danger float-right"
+						style="right: 0;">
+						Close
+					</button>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+	<!-- Скрипт для удаления комментария -->
+	<!-- Script for deleting a comment-->
+	<script src="/js/task/deleteComment.js"></script>
+
+	<script src="/js/task/closeButton.js"></script>
+
+</body>
+
+</html>

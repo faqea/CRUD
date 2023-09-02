@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<!-- Подключение скриптов Bootstrap -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+	<div class="container-fluid">
+		<div class="row">
+
+			<div class="col-1" style="background-color: #e6e8e9;">
+
+				<div class="d-flex flex-column align-items-center text-white min-vh-100">
+
+					<div 
+						class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+						<span class="fs-5 d-none d-sm-inline text-dark" th:text="${person_username}"></span>
+					</div>
+
+					<ul class="nav nav-pills flex-column align-items-center" id="menu">
+
+						<li th:if="${menuBarWinterTask}" class="nav-item">
+							<a href="/winter" class="nav-link align-middle">
+								<i class="fs-4 bi-house"></i> <span
+									class="ms-1 d-none d-sm-inline text-dark">Winter</span>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="/task" class="nav-link align-middle">
+								<i class="fs-4 bi-house"></i> <span
+									class="ms-1 d-none d-sm-inline text-dark">Task</span>
+							</a>
+						</li>
+
+						<li th:if="${menuBarClient}" class="nav-item">
+							<a href="/buyer" class="nav-link align-middle">
+								<i class="fs-4 bi-house"></i> <span
+									class="ms-1 d-none d-sm-inline text-dark">Buyer</span>
+							</a>
+						</li>
+
+						<li th:if="${menuBarBuildMarket}" class="nav-item">
+							<a href="/buildMarket" class="nav-link align-middle">
+								<i class="fs-4 bi-house"></i> <span
+									class="ms-1 d-none d-sm-inline text-dark">BuildMarket</span>
+							</a>
+						</li>
+
+						<li th:if="${menuBarProducer}" class="nav-item">
+							<a href="/producer" class="nav-link align-middle">
+								<i class="fs-4 bi-house"></i> <span
+									class="ms-1 d-none d-sm-inline text-dark">Producer</span>
+							</a>
+						</li>
+
+						<li th:if="${menuBarUser}" class="nav-item">
+							<a href="/user" class="nav-link align-middle">
+								<i class="fs-4 bi-house"></i> <span
+									class="ms-1 d-none d-sm-inline text-dark">Users</span>
+							</a>
+						</li>
+
+						<li th:if="${menuBarAdmin}" class="nav-item">
+							<a href="/admin/rolesPage" class="nav-link align-middle">
+								<i class="fs-4 bi-house"></i> <span
+									class="ms-1 d-none d-sm-inline text-dark">Admin</span>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<form th:action="@{/logout}" th:method="POST" id="logout-form">
+								<input class="btn btn-outline-danger" type="submit" value="Logout" id="logout" />
+							</form>
+						</li>
+
+					</ul>
+				</div>
+			</div>
+
+
+
+
+			<div class="col">
+
+				<div class="col-2 mt-3">
+
+					<div class="card" style="width: 18rem;">
+						<div class="card-body">
+							<h5 class="card-title">Big boss</h5>
+							<p class="card-text">Denne bruger har ingen begræ</p>
+							<a href="/admin/bigBoss" class="btn btn-outline-success stretched-link">Big boss</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-2 mt-3">
+
+					<div class="card" style="width: 18rem;">
+						<div class="card-body">
+							<h5 class="card-title">Installator</h5>
+							<p class="card-text">Denne bruger har ingen begræ</p>
+							<a href="/admin/installator" class="btn btn-outline-success stretched-link">Installator</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-2 mt-3">
+
+					<div class="card" style="width: 18rem;">
+						<div class="card-body">
+							<h5 class="card-title">Producent</h5>
+							<p class="card-text">Denne bruger har ingen begræ </p>
+							<a href="/admin/producent" class="btn btn-outline-success stretched-link">Producent</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-2 mt-3">
+
+					<div class="card" style="width: 18rem;">
+						<div class="card-body">
+							<h5 class="card-title">Byggemarked</h5>
+							<p class="card-text">Denne bruger har ingen begræDenne bruger har ingen begræDenne bruger
+								har ingen begræDenne bruger har ingen begræDenne bruger har ingen begræ</p>
+							<a href="/admin/byggemarked" class="btn btn-outline-success stretched-link">Byggemarked</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-2 mt-3">
+
+					<div class="card" style="width: 18rem;">
+						<div class="card-body">
+							<h5 class="card-title">ForhandlerFormular</h5>
+							<p class="card-text">Denne bruger har ingen begræ</p>
+							<a href="/admin/forhandlerFormular"
+								class="btn btn-outline-success stretched-link">ForhandlerFormular</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-2 mt-3">
+
+					<div class="card" style="width: 18rem;">
+						<div class="card-body">
+							<h5 class="card-title">Superbruger</h5>
+							<p class="card-text">Denne bruger har ingen begræ</p>
+							<a href="/admin/superbruger" class="btn btn-outline-success  stretched-link">Superbruger</a>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+
+	</div>
+
+</body>
+
+</html>

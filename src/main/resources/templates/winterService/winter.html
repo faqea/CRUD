@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-1" style="background-color: #e6e8e9;">
+
+            <div class="d-flex flex-column align-items-center text-white min-vh-100">
+
+                <div href="/"
+                   class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                    <span class="fs-5 d-none d-sm-inline text-dark" th:text="${person_username}"></span>
+                </div>
+
+                <ul class="nav nav-pills flex-column align-items-center"
+                    id="menu">
+
+                    <li th:if="${menuBarWinterTask}" class="nav-item">
+                        <a href="/winter" class="nav-link align-middle">
+                            <i class="fs-4 bi-house"></i> <span
+                                class="ms-1 d-none d-sm-inline text-dark">Winter</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="/task" class="nav-link align-middle">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-dark">Task</span>
+                        </a>
+                    </li>
+
+                    <li th:if="${menuBarClient}" class="nav-item">
+                        <a href="/buyer" class="nav-link align-middle">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-dark">Buyer</span>
+                        </a>
+                    </li>
+
+                    <li th:if="${menuBarBuildMarket}" class="nav-item">
+                        <a href="/buildMarket" class="nav-link align-middle">
+                            <i class="fs-4 bi-house"></i> <span
+                                class="ms-1 d-none d-sm-inline text-dark">BuildMarket</span>
+                        </a>
+                    </li>
+
+                    <li th:if="${menuBarProducer}" class="nav-item">
+                        <a href="/producer" class="nav-link align-middle">
+                            <i class="fs-4 bi-house"></i> <span
+                                class="ms-1 d-none d-sm-inline text-dark">Producer</span>
+                        </a>
+                    </li>
+
+                    <li th:if="${menuBarUser}" class="nav-item">
+                        <a href="/user" class="nav-link align-middle">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-dark">Users</span>
+                        </a>
+                    </li>
+
+                    <li th:if="${menuBarAdmin}" class="nav-item">
+                        <a href="/admin/rolesPage" class="nav-link align-middle">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-dark">Admin</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <form th:action="@{/logout}" th:method="POST" id="logout-form">
+                            <input class="btn btn-outline-danger" type="submit" value="Logout" id="logout"/>
+                        </form>
+                    </li>
+
+                </ul>
+            </div>
+
+
+        </div>
+
+        <div class="col-11">
+
+            <!-- Кнопка для создания нового winterTask'а -->
+            <!-- Button to create a new winterTask -->
+            <div th:if="${winterTaskAddAndEdit}">
+                <button class="btn btn-outline-dark mt-1" onclick="sendAndOpenEditForm55()">Add winter task</button>
+            </div>
+
+            <!-- Загрузка таблицы в CSV-файл -->
+            <!-- Uploading a table to a CSV file -->
+            <button class="btn btn-outline-dark mt-1" id="csvButton">download CSV</button>
+
+
+            <script src="/js/winterTask/csvScript.js"></script>
+
+            <!-- Список страниц для перемещения по ним -->
+            <!-- List of pages to navigate through -->
+            <ul class="pagination mt-1">
+
+                <li class="page-item">
+                    <a class="page-link" th:if="${page}" th:href="@{/winter?page={pageNumber}(pageNumber=${page} - 1)}"
+                       aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                <li class="page-item" th:each="pageNumber : ${#numbers.sequence(0, size / 2)}"><a class="page-link"
+                                                                                           th:href="@{/winter?page={pageNumber}(pageNumber=${pageNumber})}"
+                                                                                           th:text="${pageNumber + 1}">1</a>
+                </li>
+
+                <li class="page-item" th:if="${page >= 0}">
+                    <div th:if="${page != size / 2}">
+                        <a class="page-link" th:href="@{/winter?page={pageNumber}(pageNumber=${page} + 1)}"
+                           aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+
+
+            <!-- Таблица со всеми winterTask'ами -->
+            <!-- Table with all winterTasks -->
+            <div class="table-responsive">
+
+                <form th:action="@{/winter/delete}" method="post">
+                    <button class="btn btn-danger mb-1" type="submit" id="delete-form">Delete selected winter tasks</button>
+
+                    <table class="table table-striped table-hover">
+
+                        <thead>
+
+                        <tr>
+                            <th></th>
+                            <th>ID</th>
+                            <th>OrderingDate</th>
+                            <th>PickupDate</th>
+                            <th>DeliveryDate</th>
+                            <th>Route</th>
+                            <th>Location</th>
+                            <th>Preparation1</th>
+                            <th>Preparation2</th>
+                            <th>Pickup</th>
+                            <th>Delivery</th>
+                            <th>PinCode</th>
+                            <th>client</th>
+                            <th>ClientName</th>
+                            <th>clientPhoneNumber</th>
+                            <th>Road</th>
+                            <th>PostNumber</th>
+                            <th>City</th>
+                            <th>Status</th>
+                            <th>Seller</th>
+                            <th>ClientEmail</th>
+                            <th>Season</th>
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        <tr th:each="task : ${winterTaskList}" th:data-id="${task.getId()}" class="user-row">
+
+                            <td>
+                                <input type="checkbox" name="deleteIds" th:value="${task.getId()}"/>
+                            </td>
+                            <td th:text="${task.getId()}"></td>
+                            <td th:text="${task.getOrderingDate()}"></td>
+                            <td th:text="${task.getPickupDate()}"></td>
+                            <td th:text="${task.getDeliveryDate()}"></td>
+                            <td th:text="${task.getRoute()}"></td>
+                            <td th:text="${task.getLocation()}"></td>
+                            <td th:text="${task.getPreparation1()}"></td>
+                            <td th:text="${task.getPreparation2()}"></td>
+                            <td th:text="${task.getPickup()}"></td>
+                            <td th:text="${task.getDelivery()}"></td>
+                            <td th:text="${task.getPinCode()}"></td>
+                            <td th:text="${task.getClient()}"></td>
+                            <td th:text="${task.getClientName()}"></td>
+                            <td th:text="${task.getClientPhoneNumber()}"></td>
+                            <td th:text="${task.getRoad()}"></td>
+                            <td th:text="${task.getPostNumber()}"></td>
+                            <td th:text="${task.getCity()}"></td>
+                            <td th:text="${task.getStatus()}"></td>
+                            <td th:text="${task.getSeller()}"></td>
+                            <td th:text="${task.getClientEmail()}"></td>
+                            <td th:text="${task.getSeason()}"></td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+                </form>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Скрипт для редактирования winterTask'а-->
+<!-- A script for editing the winterTask -->
+<script th:if="${winterTaskAddAndEdit}" src="/js/winterTask/edit.js"></script>
+
+<!-- Скрипт для создания winter task'а при клике на кнопку -->
+<!-- A script for creating a winter task when a button is clicked -->
+<script src="/js/winterTask/winterTaskCreate.js"></script>
+
+<!-- Подключение скриптов Bootstrap JavaScript -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+</body>
+</html>

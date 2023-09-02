@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Подключение скриптов Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Форма редактирования покупателя -->
+        <!-- Customer edit form -->
+        <form th:object="${editedBuyer}" th:action="@{/buyer/{id}(id=${editedBuyer.getId()})}" method="post"
+              class="my-form">
+
+            <div class="container-fluid">
+                <div class="row g-3 align-items-center">
+
+
+                    <input type="hidden" name="taskId" th:value="${taskId}">
+
+
+                    <div class="col-2">
+                        <label for="name" class="visually-hidden">Name</label>
+                        <input type="text" th:field="*{name}" class="form-control" id="name"
+                               placeholder="" required>
+                    </div>
+
+                    <div class="col-2">
+                        <label for="way" class="visually-hidden">Way</label>
+                        <input type="text" th:field="*{way}" class="form-control" id="way"
+                               placeholder="">
+                    </div>
+
+                    <div class="col-2">
+                        <label for="post_index" class="visually-hidden">Post index</label>
+                        <input type="text" th:field="*{post_index}" class="form-control" id="post_index"
+                               placeholder="">
+                    </div>
+
+                    <div class="col-2">
+                        <label for="city" class="visually-hidden">City</label>
+                        <input type="text" th:field="*{city}" class="form-control" id="city"
+                               placeholder="">
+                    </div>
+
+                    <div class="col-2">
+                        <label for="way2" class="visually-hidden">Way2</label>
+                        <input type="text" th:field="*{way2}" class="form-control" id="way2"
+                               placeholder="">
+                    </div>
+
+                    <div class="col-2">
+                        <label for="post_index2" class="visually-hidden">Post index2</label>
+                        <input type="text" th:field="*{post_index2}" class="form-control" id="post_index2"
+                               placeholder="">
+                    </div>
+
+                    <div class="col-2">
+                        <label for="city2" class="visually-hidden">City2</label>
+                        <input type="text" th:field="*{city2}" class="form-control" id="city2"
+                               placeholder="">
+                    </div>
+
+                    <div class="col-2">
+                        <label for="phone_number" class="visually-hidden">Phone number</label>
+                        <input type="text" th:field="*{phone_number}" class="form-control" id="phone_number"
+                               placeholder="">
+                    </div>
+
+                    <div class="col-2">
+                        <label for="phone_number2" class="visually-hidden">Phone number2</label>
+                        <input type="text" th:field="*{phone_number2}" class="form-control" id="phone_number2"
+                               placeholder="">
+                    </div>
+
+                    <div class="col-2">
+                        <label for="phone_number3" class="visually-hidden">Phone number3</label>
+                        <input type="text" th:field="*{phone_number3}" class="form-control" id="phone_number3"
+                               placeholder="">
+                    </div>
+
+                    <div class="col-2">
+                        <label for="email" class="visually-hidden">Email</label>
+                        <input type="text" th:field="*{email}" class="form-control" id="email"
+                               placeholder="">
+                    </div>
+
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-success mt-4" id="save-button">Save</button>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </form>
+
+
+    </div>
+</div>
+
+
+<!-- ID клиента -->
+<!-- Client ID -->
+<input id="value" type="hidden" th:value="${editedBuyer.getId()}">
+
+<!-- Скрипт для создания робота -->
+<!-- Script for creating a robot -->
+<script src="/js/buyer/addRobot.js"></script>
+
+<!-- Список роботов -->
+<!-- The list of robots -->
+<div class="container-fluid">
+
+    <div class="row" style="margin-top: 5%;">
+
+        <div class="col-md-6 mr-4"
+             style="background-color: #e6e8e9; height: 300px; max-height: 300px; overflow: scroll; overflow-x: hidden">
+
+            <div th:text="${editedBuyer.getName()}">name</div>
+            <hr/>
+
+            <div th:each="robots : ${buyersRobotList}">
+
+                <div th:if="${robotClientEdit}" style="display: flex; align-items: center; margin-bottom: 10px;">
+
+                    <div style="max-width: 80%; width: 80%; word-break: break-word; display: flex; flex-direction: column;">
+
+                        <div style="display: flex; align-items: center;">
+
+                            <a style="margin-left: 5%" class="edit-robot-link" id="robot-text"
+                               th:href="@{/robot/{robotId}/editRobot(robotId=${robots.getId()})}"
+                               th:data-id="${robots.getId()}" th:text="${robots.getRobotName()}"></a>
+
+                        </div>
+
+                        <div style="margin-left: 5%" th:text="${robots.getRobotNumber()}"></div>
+                    </div>
+
+                    <span style="margin-left: 20%; cursor: pointer; color: red; font-weight: bold;"
+                          th:if="${robotClientDelete}" class="delete-robot-button" th:data-id="${robots.getId()}"
+                          th:data-client-id="${editedBuyer.getId()}">&times;</span>
+                </div>
+
+
+                <div th:if="${!robotClientEdit}" style="display: flex; align-items: center; margin-bottom: 10px;">
+
+                    <div style="max-width: 80%; width: 80%; word-break: break-word; display: flex; flex-direction: column;">
+
+                        <div style="display: flex; align-items: center;">
+
+                            <div style="margin-left: 5%" class="edit-robot-link"
+                                 th:text="${robots.getRobotName()}"></div>
+
+                        </div>
+
+                        <div style="margin-left: 5%" th:text="${robots.getRobotNumber()}"></div>
+                    </div>
+
+                    <span style="margin-left: 20%; cursor: pointer; color: red; font-weight: bold;"
+                          th:if="${robotClientDelete}" class="delete-robot-button" th:data-id="${robots.getId()}"
+                          th:data-client-id="${editedBuyer.getId()}">&times;</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col"
+             style="background-color: #e6e8e9; height: 300px; max-height: 300px; overflow: scroll; overflow-x: hidden">
+            <!--Файлы buyer'а -->
+            <!-- Buyer's files -->
+
+            <div th:text="${editedBuyer.getName()}">name</div>
+            <hr/>
+
+            <div th:each="file : ${files}">
+
+                <div th:text="${file.getCreateDate().format(formattedDate)}"></div>
+
+                <div th:if="${clientGalleryOpenFiles}"
+                     style="display: flex; align-items: center; margin-bottom: 10px;">
+
+                    <div style="max-width: 80%; width: 80%; word-break: break-word;">
+                        <a class="file-text"
+                           th:href="@{/files/{fileName}(fileName=${file.getFile_name()})}"
+                           th:text="${file.getFile_name()}"></a>
+                    </div>
+
+                    <span style="cursor: pointer; margin-left: 20%; color: red; font-weight: bold;"
+                          th:if="${clientGalleryDeleteFiles}"
+                          class="delete-file-button"
+                          th:data-client-id="${buyerId}"
+                          th:data-id="${file.getId()}"
+                          th:data-file-name="${file.getFile_name()}">&times;</span>
+                </div>
+
+
+                <div th:if="${!clientGalleryOpenFiles}"
+                     style="display: flex; align-items: center; margin-bottom: 10px;">
+
+                    <div style="max-width: 80%; width: 80%; word-break: break-word;"
+                         th:text="${file.getFile_name()}">text
+                    </div>
+
+
+                    <span style="cursor: pointer; margin-left: 20%; color: red; font-weight: bold;"
+                          th:if="${clientGalleryDeleteFiles}"
+                          class="delete-file-button"
+                          th:data-client-id="${buyerId}"
+                          th:data-id="${file.getId()}"
+                          th:data-file-name="${file.getFile_name()}">&times;</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Скрипт для удаления файлов -->
+        <!-- Script for deleting files -->
+        <script src="/js/buyer/deleteFile.js"></script>
+
+
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-md-6 mr-4">
+
+        <!-- Кнопка для добавления робота -->
+        <!-- Button to add a robot -->
+        <button th:if="${robotClientAdd}" class="btn btn-outline-dark mt-3" onclick="sendAndOpenEditForm5()">Add
+            robot
+        </button>
+
+    </div>
+
+    <div class="col">
+
+        <!-- Кнопка для загрузки файлов -->
+        <!-- Button for downloading files -->
+        <div th:if="${clientGalleryAddFiles}">
+			
+            <form method="POST" action="/buyer/upload" enctype="multipart/form-data">
+				
+                <input type="hidden" name="clientId" th:value="*{buyerId}">
+
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-5">
+                            <div class="mb-3">
+                                <input class="form-control mt-3" type="file" name="file">
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <button class="btn btn-outline-dark mt-3" type="submit">Download</button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </form>
+            
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+<!-- Скрипт для удаления робота -->
+<!-- Script for removing a robot -->
+<script src="/js/buyer/deleteRobot.js"></script>
+
+<div class="container-fluid">
+
+    <div class="row" style="margin-top: 7%;">
+
+        <div class="col-6"
+             style="position: relative; background-color: #e6e8e9; height: 300px; max-height: 300px; overflow: scroll; overflow-x: hidden">
+
+            <div th:each="comment : ${comments}">
+
+                <div th:text="${person_username} + ' ' + ${comment.getCreateDate().format(formattedDate)}"></div>
+
+                <div style="display: flex; align-items: center; margin-bottom: 10px;">
+
+                    <div style="max-width: 90%; width: 80%; word-break: break-word;"
+                         th:text="${comment.getComment()}"></div>
+
+
+                    <input style="margin-left: 20%" class="comment-checkbox"
+                           th:if="${commentCheck || comment.isChecked()}"
+                           type="checkbox"
+                           th:data-id="${comment.getId()}" th:checked="${comment.isChecked()}"/>
+
+                    <span class="delete-comment-button" th:data-client-id="${id}"
+                          th:data-id="${comment.getId()}"
+                          style="cursor: pointer; color: #ff0000; font-weight: bold; position: center;">&times;</span>
+
+
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row align-items-end">
+        <div class="col-11">
+
+            <form th:action="@{/comment}" method="post">
+
+                <div class="container-fluid">
+                    <div class="row g-3 align-items-center">
+
+                        <input type="hidden" name="id" th:value="*{id}">
+
+                        <div class="col-2">
+                            <label for="comment" class="visually-hidden"></label>
+                            <input name="comment" type="text" class="form-control" id="comment" placeholder="Comment">
+                        </div>
+
+                        <div class="col-2">
+                            <button class="btn btn-outline-dark mt-4" type="submit">Save</button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+<div class="container-fluid mt-auto">
+
+    <div class="row align-items-end">
+
+        <div class="col">
+            <div class="d-flex justify-content-end">
+                <button id="redirectButton" type="button" class="btn btn-outline-danger float-right"
+                        style="right: 0;">
+                    Close
+                </button>
+            </div>
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- Скрипт для удаления комментариев -->
+<!-- Script for deleting comments  -->
+<script src="/js/buyer/deleteComment.js"></script>
+<!-- Скрипт для отправки значения чекбокса на контроллер -->
+<!-- Script to send the checkbox value to the controller -->
+<script src="/js/buyer/checkBox.js"></script>
+
+<script src="/js/buyer/closeButton.js"></script>
+
+</body>
+</html>

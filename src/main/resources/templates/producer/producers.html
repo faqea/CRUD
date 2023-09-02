@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Подключение скриптов Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+
+
+<!-- Скрипт для создания нового producer'а при клике на кнопку -->
+<!-- A script for creating a new producer when a button is clicked -->
+<script src="/js/producer/create.js"></script>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-1" style="background-color: #e6e8e9;">
+
+            <div class="d-flex flex-column align-items-center text-white min-vh-100">
+
+                <div 
+                   class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                    <span class="fs-5 d-none d-sm-inline text-dark" th:text="${person_username}"></span>
+                </div>
+
+                <ul class="nav nav-pills flex-column align-items-center"
+                    id="menu">
+
+                    <li th:if="${menuBarWinterTask}" class="nav-item">
+                        <a href="/winter" class="nav-link align-middle">
+                            <i class="fs-4 bi-house"></i> <span
+                                class="ms-1 d-none d-sm-inline text-dark">Winter</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="/task" class="nav-link align-middle">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-dark">Task</span>
+                        </a>
+                    </li>
+
+                    <li th:if="${menuBarClient}" class="nav-item">
+                        <a href="/buyer" class="nav-link align-middle">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-dark">Buyer</span>
+                        </a>
+                    </li>
+
+                    <li th:if="${menuBarBuildMarket}" class="nav-item">
+                        <a href="/buildMarket" class="nav-link align-middle">
+                            <i class="fs-4 bi-house"></i> <span
+                                class="ms-1 d-none d-sm-inline text-dark">BuildMarket</span>
+                        </a>
+                    </li>
+
+                    <li th:if="${menuBarProducer}" class="nav-item">
+                        <a href="/producer" class="nav-link align-middle">
+                            <i class="fs-4 bi-house"></i> <span
+                                class="ms-1 d-none d-sm-inline text-dark">Producer</span>
+                        </a>
+                    </li>
+
+                    <li th:if="${menuBarUser}" class="nav-item">
+                        <a href="/user" class="nav-link align-middle">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-dark">Users</span>
+                        </a>
+                    </li>
+
+                    <li th:if="${menuBarAdmin}" class="nav-item">
+                        <a href="/admin/rolesPage" class="nav-link align-middle">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline text-dark">Admin</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <form th:action="@{/logout}" th:method="POST" id="logout-form">
+                            <input class="btn btn-outline-danger" type="submit" value="Logout" id="logout"/>
+                        </form>
+                    </li>
+
+                </ul>
+            </div>
+
+
+        </div>
+
+        <div class="col-11">
+
+            <!-- Кнопка для создания Build Market'а -->
+            <!-- Button to create a Build Market -->
+            <div>
+                <button class="btn btn-outline-dark mt-1" onclick="sendAndOpenEditForm()">Add producer</button>
+            </div>
+
+            <!-- Загрузка таблицы в CSV-файл -->
+            <!-- Uploading a table to a CSV file -->
+            <button class="btn btn-outline-dark mt-1" id="csvButton">download CSV</button>
+
+            <script src="/js/producer/csvScript.js"></script>
+
+            <!-- Список страниц для перемещения по ним -->
+            <!-- List of pages to navigate through -->
+            <ul class="pagination mt-1">
+
+                <li class="page-item">
+                    <a class="page-link" th:if="${page}" th:href="@{/producer?page={pageNumber}(pageNumber=${page} - 1)}"
+                       aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                <li class="page-item" th:each="pageNumber : ${#numbers.sequence(0, size / 2)}"><a class="page-link"
+                                                                                           th:href="@{/producer?page={pageNumber}(pageNumber=${pageNumber})}"
+                                                                                           th:text="${pageNumber + 1}">1</a>
+                </li>
+
+                <li class="page-item" th:if="${page >= 0}">
+                    <div th:if="${page != size / 2}">
+                        <a class="page-link" th:href="@{/producer?page={pageNumber}(pageNumber=${page} + 1)}"
+                           aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+
+            <!-- Таблица с build Market'ами -->
+            <!-- Build Market Table -->
+            <div class="table-responsive">
+
+
+                <!-- Таблица с producer'ами -->
+                <!-- The producer table -->
+                <form id="delete-form" th:action="@{/producer/delete}" method="post">
+
+                    <button class="btn btn-danger mb-1" type="submit">Delete selected producers
+                    </button>
+
+                    <table class="table table-striped table-hover">
+
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Address</th>
+                            <th>PostNumber</th>
+                            <th>City</th>
+                            <th>PhoneNumber</th>
+                            <th>CVR NUmber</th>
+                            <th>Email</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="producer : ${producers}" th:data-id="${producer.getId()}" class="user-row">
+                            <td>
+                                <input type="checkbox" name="deleteIds" th:value="${producer.getId()}"/>
+                            </td>
+                            <td class="task-id" th:text="${producer.getId()}"></td>
+                            <td class="task-order" th:text="${producer.getName()}"></td>
+                            <td class="task-route" th:text="${producer.getAddress()}"></td>
+                            <td class="task-address" th:text="${producer.getPostNumber()}"></td>
+                            <td class="task-address1" th:text="${producer.getCity()}"></td>
+                            <td class="task-address2" th:text="${producer.getPhoneNumber()}"></td>
+                            <td class="task-pickup" th:text="${producer.getCvrNumber()}"></td>
+                            <td class="task-deliver" th:text="${producer.getEmail()}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Скрипт для редактирования ячейки таблицы при клике на нее -->
+<!-- Скрипт для редактирования ячейки таблицы при клике на нее -->
+<script src="/js/producer/edit.js"></script>
+
+</body>
+</html>
