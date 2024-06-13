@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<!-- Подключение скриптов Bootstrap -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+	<div class="container-fluid">
+
+		<div class="row">
+
+			<div class="col-11 mt-3">
+
+				Opgaver
+				<hr />
+				Ma oprete nye opgaver <input type="checkbox" id="checkbox42" onclick="updateValue1()"
+					onchange="saveCheckboxValue(42)">
+				<br />
+				Ma slette opgaver <input type="checkbox" id="checkbox43" onclick="updateValue2()"
+					onchange="saveCheckboxValue(43)">
+				<br />
+				Ma abone opgave linje popup <input type="checkbox" id="checkbox44" onclick="updateValue3()"
+					onchange="saveCheckboxValue(44)">
+				<br />
+				Ma redigere opgave data (Installatorer kan altid aendre robot data) <input type="checkbox"
+					id="checkbox45" onclick="updateValue4()" onchange="saveCheckboxValue(45)">
+				<br />
+				<br />
+				Kunder
+				<hr />
+				Ma oprete nye kunder <input type="checkbox" id="checkbox46" onclick="updateValue5()"
+					onchange="saveCheckboxValue(46)">
+				<br />
+				Ma slette kunder <input type="checkbox" id="checkbox47" onclick="updateValue6()"
+					onchange="saveCheckboxValue(47)">
+				<br />
+				Ma abone kunde info popup <input type="checkbox" id="checkbox48" onclick="updateValue7()"
+					onchange="saveCheckboxValue(48)">
+				<br />
+				Глазик <input type="checkbox" id="checkbox68" onclick="updateValue27()"
+					onchange="saveCheckboxValue(68)">
+
+				<br />
+				Ma skrive nye kommentarer <input type="checkbox" id="checkbox49" onclick="updateValue8()"
+					onchange="saveCheckboxValue(49)">
+				<br />
+				Ma se og redigere interne kommentarer <input type="checkbox" id="checkbox50" onclick="updateValue9()"
+					onchange="saveCheckboxValue(50)">
+				<br />
+				<br />
+				Kunders galleri
+				<hr />
+				Добавлять файлы <input type="checkbox" id="checkbox51" onclick="updateValue10()"
+					onchange="saveCheckboxValue(51)">
+				<br />
+				Смотреть файлы <input type="checkbox" id="checkbox52" onclick="updateValue11()"
+					onchange="saveCheckboxValue(52)">
+				<br />
+				Удалять файлы <input type="checkbox" id="checkbox53" onclick="updateValue12()"
+					onchange="saveCheckboxValue(53)">
+				<br />
+				<br />
+				Kunders robotter
+				<hr />
+				Добавлять робота <input type="checkbox" id="checkbox54" onclick="updateValue13()"
+					onchange="saveCheckboxValue(54)">
+				<br />
+				Редактировать робота <input type="checkbox" id="checkbox55" onclick="updateValue14()"
+					onchange="saveCheckboxValue(55)">
+				<br />
+				Удалить робота <input type="checkbox" id="checkbox56" onclick="updateValue15()"
+					onchange="saveCheckboxValue(56)">
+				<br />
+				<br />
+				Vinter opbevaring
+				<hr />
+				Редактировать и создавать <input type="checkbox" id="checkbox57" onclick="updateValue16()"
+					onchange="saveCheckboxValue(57)">
+				<br />
+				<br />
+				Bruger Styring
+				<hr />
+				Создавать <input type="checkbox" id="checkbox64" onclick="updateValue23()"
+					onchange="saveCheckboxValue(64)">
+				<br />
+				Открывать <input type="checkbox" id="checkbox65" onclick="updateValue24()"
+					onchange="saveCheckboxValue(65)">
+				<br />
+				Изменять пароль <input type="checkbox" id="checkbox66" onclick="updateValue25()"
+					onchange="saveCheckboxValue(66)">
+				<br />
+				Må ændre brugerens adgangsniveau <input type="checkbox" id="checkbox67" onclick="updateValue26()"
+					onchange="saveCheckboxValue(67)">
+				<br />
+				<br />
+				Menu bar
+				<hr />
+				Kunder <input type="checkbox" id="checkbox58" onclick="updateValue17()"
+					onchange="saveCheckboxValue(58)">
+				<br />
+				Byggemarkeder <input type="checkbox" id="checkbox59" onclick="updateValue18()"
+					onchange="saveCheckboxValue(59)">
+				<br />
+				Producenter <input type="checkbox" id="checkbox60" onclick="updateValue19()"
+					onchange="saveCheckboxValue(60)">
+				<br />
+				Vinter Opbevaring <input type="checkbox" id="checkbox61" onclick="updateValue20()"
+					onchange="saveCheckboxValue(61)">
+				<br />
+				Список сотрудников <input type="checkbox" id="checkbox63" onclick="updateValue22()"
+					onchange="saveCheckboxValue(63)">
+				<br />
+				Админка <input type="checkbox" id="checkbox62" onclick="updateValue21()"
+					onchange="saveCheckboxValue(62)">
+			</div>
+
+		</div>
+	</div>
+
+	<div class="container-fluid mt-auto">
+
+		<div class="row align-items-end">
+
+			<div class="col">
+
+				<div class="d-flex justify-content-end">
+					<a href="/admin/rolesPage" class="btn btn-outline-danger stretched-link float-right">Close</a>
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<!-- Скрипт для сохранения значения чекбоксов -->
+	<!-- Script for saving checkbox values -->
+	<script src="/js/admin/checkBoxSaveScriptProd.js"></script>
+
+	<!-- Скрипт для отправки значений чекбоксов на контроллер -->
+	<!-- Script for sending checkbox values to the controller -->
+	<script src="/js/admin/checkBoxScriptProd.js"></script>
+
+</body>
+
+</html>

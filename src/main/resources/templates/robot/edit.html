@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Robot edit</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<!-- Подключение скриптов Bootstrap -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+	<div class="container-fluid">
+		<div class="row">
+
+			<!-- Форма для редактирования робота -->
+			<!-- Form for editing a robot -->
+			<div>
+				<form id="myForm2" th:object="${editedRobot}" th:action="@{/robot/{id}(id=${editedRobot.getId()})}"
+					method="post">
+
+					<div class="container-fluid">
+						<div class="row g-3 align-items-center">
+
+							<input type="hidden" name="ownerId" th:value="${id1}">
+
+							<input type="hidden" name="winterId" th:value="${id2}">
+
+							<input type="hidden" name="taskId" th:value="${id3}">
+
+							<div class="col-2">
+								<label for="owner" class="visually-hidden">Owner</label>
+								<input list="buyersList" type="text" th:field="*{owner}" class="form-control" id="owner"
+									placeholder="">
+
+								<datalist id="buyersList">
+									<option th:each="client : ${buyersList}" th:value="${client.getId()}"
+										th:text="${client.getName()}"></option>
+								</datalist>
+							</div>
+
+							<div class="col-2">
+								<label for="robot_name" class="visually-hidden">Robot name</label>
+								<input type="text" th:field="*{robotName}" class="form-control" id="robot_name"
+									placeholder="">
+							</div>
+
+							<div class="col-2">
+								<label for="robot_number" class="visually-hidden">Robot number</label>
+								<input type="text" th:field="*{robotNumber}" class="form-control" id="robot_number"
+									placeholder="">
+							</div>
+
+							<div class="col-2">
+								<label for="robot_date" class="visually-hidden">Robot date</label>
+								<input type="date" th:field="*{robotDate}" class="form-control" id="robot_date"
+									placeholder="">
+							</div>
+
+							<div class="col-2">
+								<label for="pin_code" class="visually-hidden">PIN code</label>
+								<input type="text" th:field="*{pinCode}" class="form-control" id="pin_code"
+									placeholder="">
+							</div>
+
+							<div class="col-2">
+								<button type="submit" class="btn btn-success mt-4" id="save-button">Save</button>
+							</div>
+
+
+						</div>
+					</div>
+
+
+				</form>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid mt-auto">
+
+		<div class="row align-items-end">
+			<div class="col-11"
+				style="overflow: scroll; height: 500px; max-height: 500px; background-color: #e6e8e9; overflow-x: hidden;">
+
+				<div th:each="logs : ${RobotsLogs}">
+					<div th:text="${person_username} + ' ' + ${logs.getDate().format(formattedDate)}"></div>
+					<div th:text="${logs.getMessage()}">log</div>
+				</div>
+
+			</div>
+
+			<div th:if="${editedRobot.getBuyer() != null}">
+
+
+				<div class="col">
+					<div class="d-flex justify-content-end">
+						<button th:data-id="${editedRobot.getBuyer().getId()}" id="redirectButton" type="button"
+							class="btn btn-outline-danger float-right" style="right: 0;">
+							Close
+						</button>
+					</div>
+				</div>
+
+			</div>
+			
+			
+			<div th:if="${editedRobot.getBuyer() == null}">
+
+
+				<div class="col">
+					<div class="d-flex justify-content-end">
+						<a href="/buyer" class="btn btn-outline-danger stretched-link float-right">Close</a>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="container-fluid">
+
+		<div class="row">
+
+			<div class="col">
+
+				<!-- Проверка на наличие зимнего задания у робота -->
+				<!-- Checking for a winter task for the robot -->
+				<div>
+					<div th:if="${yes}">
+						<button class="btn btn-outline-dark mr-1" onclick="sendAndOpenEditForm()"
+							th:data-id="${robotId}" id="open-button">Order winter
+							storage</button>
+					</div>
+
+					<div th:if="${no}">
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+	<script src="/js/robot/closeButton.js"></script>
+
+	<!-- Скрипт для создания зимнего задания -->
+	<!-- A script for creating a winter job -->
+	<script src="/js/robot/edit.js"></script>
+
+
+
+</body>
+
+</html>
