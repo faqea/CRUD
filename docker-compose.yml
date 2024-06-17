@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  app:
+    image: app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    depends_on:
+      - postgres
+    environment:
+      - SERVER_PORT=5001
+      - SPRING_DATASOURCE_DRIVER-CLASS-NAME=org.postgresql.Driver
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/robomenden
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=ae
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
+      - SPRING_JPA_PROPERTIES_HIBERNATE_SHOW_SQL=true
+      - SPRING_MVC_HIDDENMETHOD_FILTER_ENABLED=true
+      - SPRING_MAIN_ALLOW-CIRCULAR-REFERENCES=true
+      - SPRING_SERVLET_MULTIPART_ENABLED=true
+      - SPRING_SERVLET_MULTIPART_FILE-SIZE-THRESHOLD=2KB
+      - SPRING_SERVLET_MULTIPART_MAX-FILE-SIZE=10MB
+      - SPRING_SERVLET_MULTIPART_MAX-REQUEST-SIZE=100MB
+      - SPRING_JACKSON_TIME-ZONE=Europe/Moscow
+
+  postgres:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=robomenden
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=ae
+    ports:
+      - "5432:5432"
